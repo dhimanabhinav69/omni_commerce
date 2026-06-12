@@ -65,3 +65,24 @@ CREATE TABLE product_variants (
     stock_status VARCHAR(30)
 );
 
+'''stores and inventory tables'''
+
+CREATE TABLE stores (
+    store_id SERIAL PRIMARY KEY,
+    store_name VARCHAR(100),
+    store_type VARCHAR(30),
+    city VARCHAR(50),
+    state VARCHAR(50),
+    country VARCHAR(50),
+    opening_date DATE,
+    manager_name VARCHAR(100)
+);
+
+CREATE TABLE inventory (
+    inventory_id SERIAL PRIMARY KEY,
+    store_id INT REFERENCES stores(store_id),
+    variant_id INT REFERENCES product_variants(variant_id),
+    quantity_available INT,
+    reorder_level INT,
+    last_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
