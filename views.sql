@@ -1,4 +1,4 @@
-CREATE VIEW v_order_item_details AS
+CREATE VIEW order_item_details AS
 SELECT
     o.order_id,
     o.order_date,
@@ -28,7 +28,7 @@ JOIN order_items oi ON o.order_id = oi.order_id
 JOIN products p ON oi.product_id = p.product_id
 JOIN categories cat ON p.category_id = cat.category_id;
 
-CREATE VIEW v_order_summary AS
+CREATE VIEW order_summary AS
 SELECT
     o.order_id,
     o.order_date,
@@ -53,7 +53,7 @@ GROUP BY
     c.customer_id,
     c.customer_name;
 
-CREATE VIEW v_monthly_sales AS
+CREATE VIEW monthly_sales AS
 SELECT
     DATE_TRUNC('month', order_date)::DATE AS sales_month,
     COUNT(DISTINCT order_id) AS total_orders,
@@ -63,7 +63,7 @@ FROM v_order_item_details
 WHERE order_status <> 'Cancelled'
 GROUP BY DATE_TRUNC('month', order_date)::DATE;
 
-CREATE VIEW v_product_performance AS
+CREATE VIEW product_performance AS
 SELECT
     product_id,
     product_name,
@@ -76,7 +76,7 @@ FROM v_order_item_details
 WHERE order_status <> 'Cancelled'
 GROUP BY product_id, product_name, category_name, brand;
 
-CREATE VIEW v_customer_summary AS
+CREATE VIEW customer_summary AS
 SELECT
     c.customer_id,
     c.customer_name,
