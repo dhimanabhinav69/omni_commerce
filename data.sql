@@ -282,4 +282,3 @@ INSERT INTO reviews (customer_id, product_id, rating, review_date, review_text) 
 (19, 6, 5, '2025-04-23', 'Perfect fit'),
 (1, 5, 4, '2025-05-08', 'Nice product'),
 (3, 2, 5, '2025-05-12', 'Good speaker');
-
