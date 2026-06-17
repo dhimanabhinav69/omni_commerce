@@ -1,0 +1,21 @@
+store_id,store_name,region_id,city,state,store_type,opened_date,latitude,longitude
+1,Delhi Connaught Place,1,Delhi,Delhi,Flagship,2018-04-15,28.6315,77.2167
+2,Gurugram Cyber Hub,1,Gurugram,Haryana,Mall,2019-02-20,28.495,77.0888
+3,Jaipur Pink City,1,Jaipur,Rajasthan,High Street,2020-10-10,26.9124,75.7873
+4,Lucknow Hazratganj,1,Lucknow,Uttar Pradesh,High Street,2021-07-19,26.8467,80.9462
+5,Bengaluru Indiranagar,2,Bengaluru,Karnataka,Flagship,2017-06-01,12.9784,77.6408
+6,Chennai T Nagar,2,Chennai,Tamil Nadu,High Street,2018-09-23,13.0418,80.2341
+7,Hyderabad Banjara Hills,2,Hyderabad,Telangana,Mall,2019-11-05,17.4126,78.4483
+8,Kochi Lulu Mall,2,Kochi,Kerala,Mall,2021-01-14,10.0261,76.3125
+9,Kolkata Park Street,3,Kolkata,West Bengal,High Street,2018-03-12,22.5531,88.3525
+10,Bhubaneswar Esplanade,3,Bhubaneswar,Odisha,Mall,2020-08-08,20.2961,85.8245
+11,Guwahati GS Road,3,Guwahati,Assam,High Street,2021-05-30,26.1445,91.7362
+12,Patna Frazer Road,3,Patna,Bihar,High Street,2022-02-11,25.5941,85.1376
+13,Mumbai Bandra,4,Mumbai,Maharashtra,Flagship,2017-01-20,19.0596,72.8295
+14,Pune Koregaon Park,4,Pune,Maharashtra,High Street,2018-11-17,18.5362,73.8937
+15,Ahmedabad CG Road,4,Ahmedabad,Gujarat,High Street,2020-04-25,23.0225,72.5714
+16,Surat VR Mall,4,Surat,Gujarat,Mall,2021-12-06,21.1702,72.8311
+17,Indore Vijay Nagar,5,Indore,Madhya Pradesh,High Street,2019-06-18,22.7533,75.8937
+18,Bhopal DB Mall,5,Bhopal,Madhya Pradesh,Mall,2020-02-12,23.2599,77.4126
+19,Nagpur Civil Lines,5,Nagpur,Maharashtra,High Street,2021-03-21,21.1458,79.0882
+20,Raipur Magneto Mall,5,Raipur,Chhattisgarh,Mall,2022-09-01,21.2514,81.6296
