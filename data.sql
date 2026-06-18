@@ -1,10 +1,12 @@
-\copy regions FROM 'data/regions.csv' WITH (FORMAT csv, HEADER true)
-\copy stores FROM 'data/stores.csv' WITH (FORMAT csv, HEADER true)
-\copy customers FROM 'data/customers.csv' WITH (FORMAT csv, HEADER true)
-\copy product_categories FROM 'data/product_categories.csv' WITH (FORMAT csv, HEADER true)
-\copy products FROM 'data/products.csv' WITH (FORMAT csv, HEADER true)
-\copy orders FROM 'data/orders.csv' WITH (FORMAT csv, HEADER true)
-\copy order_items FROM 'data/order_items.csv' WITH (FORMAT csv, HEADER true)
-\copy marketing_spend FROM 'data/marketing_spend.csv' WITH (FORMAT csv, HEADER true)
-\copy sales_targets FROM 'data/sales_targets.csv' WITH (FORMAT csv, HEADER true)
-\copy customers_dirty_staging FROM 'data/customers_dirty.csv' WITH (FORMAT csv, HEADER true)
+TRUNCATE TABLE
+    order_items, orders, products, customers, monthly_targets, shipments, sales_reps
+RESTART IDENTITY CASCADE;
+
+
+\copy customers FROM 'data/customers.csv' WITH (FORMAT csv, HEADER true);
+\copy products FROM 'data/products.csv' WITH (FORMAT csv, HEADER true);
+\copy sales_reps FROM 'data/sales_reps.csv' WITH (FORMAT csv, HEADER true);
+\copy orders FROM 'data/orders.csv' WITH (FORMAT csv, HEADER true);
+\copy order_items FROM 'data/order_items.csv' WITH (FORMAT csv, HEADER true);
+\copy shipments FROM 'data/shipments.csv' WITH (FORMAT csv, HEADER true);
+\copy monthly_targets FROM 'data/monthly_targets.csv' WITH (FORMAT csv, HEADER true);
