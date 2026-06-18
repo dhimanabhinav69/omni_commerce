@@ -1,44 +1,7 @@
 -- 1. Check row counts after CSV load
-SELECT 'customers' AS table_name, COUNT(*) AS rows_loaded FROM customers
-UNION ALL SELECT 'products', COUNT(*) FROM products
-UNION ALL SELECT 'sales_reps', COUNT(*) FROM sales_reps
-UNION ALL SELECT 'orders', COUNT(*) FROM orders
-UNION ALL SELECT 'order_items', COUNT(*) FROM order_items
-UNION ALL SELECT 'shipments', COUNT(*) FROM shipments
-UNION ALL SELECT 'monthly_targets', COUNT(*) FROM monthly_targets;
+SELECT * FROM customers
 
--- 2. Main joined dataset used by Tableau
-SELECT
-    o.order_id,
-    o.order_date,
-    c.customer_name,
-    c.segment,
-    c.city,
-    c.state,
-    c.region,
-    p.category,
-    p.sub_category,
-    p.product_name,
-    sr.rep_name,
-    s.ship_mode,
-    s.ship_date,
-    s.delivery_date,
-    oi.quantity,
-    oi.selling_price,
-    o.discount_pct,
-    ROUND(oi.quantity * oi.selling_price * (1 - o.discount_pct), 2) AS sales,
-    ROUND(oi.quantity * p.cost_price, 2) AS product_cost,
-    s.shipping_cost
-FROM orders o
-JOIN customers c ON o.customer_id = c.customer_id
-JOIN sales_reps sr ON o.rep_id = sr.rep_id
-JOIN order_items oi ON o.order_id = oi.order_id
-JOIN products p ON oi.product_id = p.product_id
-JOIN shipments s ON o.order_id = s.order_id
-WHERE o.order_status = 'Completed'
-LIMIT 20;
-
--- 3. KPI verification: total sales, profit, orders, quantity
+-- 2. KPI verification: total sales, profit, orders, quantity
 SELECT
     ROUND(SUM(line_sales), 2) AS total_sales,
     ROUND(SUM(line_profit), 2) AS total_profit,
@@ -62,7 +25,7 @@ FROM (
     WHERE o.order_status = 'Completed'
 ) x;
 
--- 4. Bar chart: sales by sub-category
+-- 3. Bar chart: sales by sub-category
 SELECT
     p.sub_category,
     ROUND(SUM(oi.quantity * oi.selling_price * (1 - o.discount_pct)), 2) AS sales
@@ -73,7 +36,7 @@ WHERE o.order_status = 'Completed'
 GROUP BY p.sub_category
 ORDER BY sales DESC;
 
--- 5. Stacked bar: sales by region and customer segment
+-- 4. Stacked bar: sales by region and customer segment
 SELECT
     c.region,
     c.segment,
@@ -85,7 +48,7 @@ WHERE o.order_status = 'Completed'
 GROUP BY c.region, c.segment
 ORDER BY c.region, sales DESC;
 
--- 6. Donut or pie chart: sales share by category
+-- 5. Donut or pie chart: sales share by category
 SELECT
     p.category,
     ROUND(SUM(oi.quantity * oi.selling_price * (1 - o.discount_pct)), 2) AS sales
@@ -96,7 +59,7 @@ WHERE o.order_status = 'Completed'
 GROUP BY p.category
 ORDER BY sales DESC;
 
--- 7. Map chart: sales by state
+-- 6. Map chart: sales by state
 SELECT
     c.state,
     c.country,
@@ -108,7 +71,7 @@ WHERE o.order_status = 'Completed'
 GROUP BY c.state, c.country
 ORDER BY sales DESC;
 
--- 8. Scatter chart: customer sales vs profit
+-- 7. Scatter chart: customer sales vs profit
 SELECT
     customer_name,
     ROUND(SUM(line_sales), 2) AS sales,
@@ -132,7 +95,7 @@ FROM (
 GROUP BY customer_name
 ORDER BY sales DESC;
 
--- 9. Bubble chart: quantity by sub-category
+-- 8. Bubble chart: quantity by sub-category
 SELECT
     p.sub_category,
     SUM(oi.quantity) AS total_quantity,
@@ -144,7 +107,7 @@ WHERE o.order_status = 'Completed'
 GROUP BY p.sub_category
 ORDER BY total_quantity DESC;
 
--- 10. Dual axis chart: monthly sales and profit
+-- 9. Dual axis chart: monthly sales and profit
 SELECT
     month,
     ROUND(SUM(line_sales), 2) AS sales,
@@ -166,7 +129,7 @@ FROM (
 GROUP BY month
 ORDER BY month;
 
--- 11. Gantt chart: order processing and delivery duration
+-- 10. Gantt chart: order processing and delivery duration
 SELECT
     o.order_id,
     o.order_date,
@@ -181,35 +144,7 @@ JOIN shipments s ON o.order_id = s.order_id
 WHERE o.order_status = 'Completed'
 ORDER BY total_fulfilment_days DESC;
 
--- 12. Bullet chart: sales vs target by region and category
-SELECT
-    mt.region,
-    mt.category,
-    ROUND(SUM(mt.sales_target), 2) AS target_sales,
-    ROUND(COALESCE(SUM(actuals.sales), 0), 2) AS actual_sales,
-    ROUND(COALESCE(SUM(actuals.sales), 0) / NULLIF(SUM(mt.sales_target), 0) * 100, 2) AS achievement_pct
-FROM monthly_targets mt
-LEFT JOIN (
-    SELECT
-        DATE_TRUNC('month', o.order_date)::date AS target_month,
-        c.region,
-        p.category,
-        SUM(oi.quantity * oi.selling_price * (1 - o.discount_pct)) AS sales
-    FROM orders o
-    JOIN customers c ON o.customer_id = c.customer_id
-    JOIN order_items oi ON o.order_id = oi.order_id
-    JOIN products p ON oi.product_id = p.product_id
-    WHERE o.order_status = 'Completed'
-    GROUP BY DATE_TRUNC('month', o.order_date)::date, c.region, p.category
-) actuals
-ON mt.target_month = actuals.target_month
-AND mt.region = actuals.region
-AND mt.category = actuals.category
-GROUP BY mt.region, mt.category
-HAVING SUM(mt.sales_target) > 0
-ORDER BY achievement_pct DESC;
-
--- 13. Heatmap: profit margin by state and category
+-- 11. Heatmap: profit margin by state and category
 SELECT
     state,
     category,
@@ -229,12 +164,11 @@ FROM (
     JOIN order_items oi ON o.order_id = oi.order_id
     JOIN products p ON oi.product_id = p.product_id
     JOIN shipments s ON o.order_id = s.order_id
-    WHERE o.order_status = 'Completed'
 ) x
 GROUP BY state, category
 ORDER BY state, category;
 
--- 14. Text table: top products with rank
+-- 12. Text table: top products with rank
 SELECT
     product_name,
     category,
@@ -261,14 +195,13 @@ FROM (
         JOIN order_items oi ON o.order_id = oi.order_id
         JOIN products p ON oi.product_id = p.product_id
         JOIN shipments s ON o.order_id = s.order_id
-        WHERE o.order_status = 'Completed'
     ) line_data
     GROUP BY product_name, category
 ) ranked_products
 WHERE sales_rank <= 10
 ORDER BY sales_rank;
 
--- 15. Window function: monthly sales trend with previous month comparison
+-- 13. Window function: monthly sales trend with previous month comparison
 SELECT
     month,
     sales,
@@ -280,12 +213,11 @@ FROM (
         ROUND(SUM(oi.quantity * oi.selling_price * (1 - o.discount_pct)), 2) AS sales
     FROM orders o
     JOIN order_items oi ON o.order_id = oi.order_id
-    WHERE o.order_status = 'Completed'
     GROUP BY DATE_TRUNC('month', o.order_date)::date
 ) monthly_sales
 ORDER BY month;
 
--- 16. Window function: top 3 products in each category
+-- 14. Window function: top 3 products in each category
 SELECT
     category,
     product_name,
@@ -303,8 +235,20 @@ FROM (
     FROM orders o
     JOIN order_items oi ON o.order_id = oi.order_id
     JOIN products p ON oi.product_id = p.product_id
-    WHERE o.order_status = 'Completed'
     GROUP BY p.category, p.product_name
 ) ranked
 WHERE product_rank <= 3
 ORDER BY category, product_rank;
+
+-- 15. Box & Whisker Plot
+SELECT
+    o.order_id,
+    s.ship_mode,
+    o.order_date,
+    s.delivery_date,
+    s.delivery_date - o.order_date AS total_fulfilment_days
+FROM orders o
+JOIN shipments s 
+    ON o.order_id = s.order_id
+WHERE o.order_status = 'Completed'
+ORDER BY s.ship_mode, total_fulfilment_days;

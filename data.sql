@@ -9,4 +9,3 @@ RESTART IDENTITY CASCADE;
 \copy orders FROM 'data/orders.csv' WITH (FORMAT csv, HEADER true);
 \copy order_items FROM 'data/order_items.csv' WITH (FORMAT csv, HEADER true);
 \copy shipments FROM 'data/shipments.csv' WITH (FORMAT csv, HEADER true);
-\copy monthly_targets FROM 'data/monthly_targets.csv' WITH (FORMAT csv, HEADER true);
