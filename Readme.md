@@ -1,4 +1,4 @@
-# OmniCommerce Retail Analytics
+0# OmniCommerce Retail Analytics
 
 End-to-end **PostgreSQL + Tableau** analytics project for retail sales, profit, customer, product, geography, and fulfilment analysis.
 
@@ -27,7 +27,6 @@ The project uses 7 relational tables:
 - `orders`
 - `order_items`
 - `shipments`
-- `monthly_targets`
 
 ## Dashboard Highlights
 
@@ -81,7 +80,6 @@ omnicommerce-retail-analytics/
 │   ├── orders.csv
 │   ├── order_items.csv
 │   ├── shipments.csv
-│   └── monthly_targets.csv
 │
 ├── sql/
 │   ├── 00_create_tables.sql
@@ -101,7 +99,7 @@ omnicommerce-retail-analytics/
 1. Create a PostgreSQL database.
 2. Run the table creation script:
 
-```bash
+```bash6
 psql -U postgres -d omnicommerce -f sql/00_create_tables.sql
 ```
 
